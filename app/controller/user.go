@@ -111,6 +111,7 @@ func UpdateUserHandler(c *gin.Context) {
 
 func GetUserHandler(c *gin.Context) {
 	var backendUserId, staywatchUserId int64
+	var userNamePtr *string
 	var err error
 
 	backendUserQuery := c.Query("backend")
@@ -145,12 +146,7 @@ func GetUserHandler(c *gin.Context) {
 		slackChannelPtr = &slackChannelQuery
 	}
 
-	userNameQuery := c.Query("name")
-	var userNamePtr *string
-	if userNameQuery != "" {
-		userNamePtr = &userNameQuery
-	}
-	if staywatchUserQuery == "" && slackUserQuery == "" && slackChannelQuery == "" && userNameQuery == "" {
+	if staywatchUserQuery == "" && slackUserQuery == "" && slackChannelQuery == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "no query"})
 		return
 	}
